@@ -1,0 +1,91 @@
+---
+title:  "Relatório Estatístico"
+author: "Augusto Filho"
+format: 
+  docx:
+    reference_docx: 
+lang: pt-BR  # Define o idioma para português do Brasil
+locale: pt_BR.UTF-8  # Define o locale para português do Brasil
+editor: visual
+---
+
+```{r setup, include=FALSE}
+# Carregando bibliotecas necessárias
+pacman::p_load(
+  # Manipulação de arquivos e projetos
+  here, rio, openxlsx, readxl,
+  
+  # Manejo e instalação de pacotes
+  pacman, renv, remotes,
+  
+  # Manipulação e visualização de dados
+  tidyverse, ggplot2, linelist, naniar, purrr,
+  
+  # Estatísticas e análise de dados
+  janitor, gtsummary, rstatix, broom, lmtest, easystats,
+  
+  # Modelos epidemiológicos
+  epicontacts, EpiNow2, EpiEstim, projections, incidence2, i2extras, epitrix, distcrete,
+  
+  # Visualizações e gráficos
+  cowplot, RColorBrewer, ggnewscale, sjPlot, DiagrammeR, incidence2, gghighlight, 
+  ggrepel, plotly, gganimate, likert, ggstatsplot, apyramid,
+  
+  # Dados espaciais e GIS
+  sf, tmap, spdep,
+  
+  # Relatórios e documentos
+  rmarkdown, reportfactory, officer, officedown,
+  
+  # Dashboards
+  flexdashboard, shiny,
+  
+  # Tabelas para apresentação de dados
+  knitr, flextable, gt,
+  
+  # Filogenética
+  ggtree, ape, treeio
+)
+
+```
+
+```{r, message=FALSE,include=F}
+
+setwd("/cloud/project/Roberto")
+
+
+#Carregando base de dados
+base <- read_excel("base_augusto.xlsx",sheet = "base")
+
+#Ordenação das respostas da variável idade
+base$idade <- factor(base$idade, 
+                     levels = c("Menores de 1 ano",
+                                "1 ano",
+                                "2 anos",
+                                "3 anos",
+                                "4 anos",
+                                "5 anos",
+                                "6 anos"))
+
+#Transformando todas as variáveis chr em factor
+base %>% dplyr::mutate_if(is.character,as.factor)-> base
+```
+
+# Estatísticas Utilizadas
+
+
+```{r}
+
+########### ENCONTRO DO DIA 01/10/2024
+theme_gtsummary_language(language = "pt")
+base |> 
+  tbl_summary(by=`Classificação ABEP`,
+              missing = "no") |> 
+  bold_labels() |> 
+  modify_caption("**Caracterização da Amostra para ABEP**") |> 
+  modify_spanning_header(c("stat_1", "stat_2") ~ "**ABEP**") |> 
+  add_overall(col_label="**Total N**  \nN = {style_number(N)}") %>% 
+  add_p() %>% 
+  bold_p()
+```
+
