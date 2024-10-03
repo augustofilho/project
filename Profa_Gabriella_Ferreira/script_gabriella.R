@@ -436,3 +436,48 @@ tabela_correlacao <- resultados_correlacao %>%
 # Exibir a tabela
 tabela_correlacao
 
+
+
+
+##### Fazer os gráficos de dispersão em um só painel
+# Gráfico 1: G vs Peso RN 1 (g)
+dados=base
+
+g1 <- ggplot(dados, aes(x = `Peso RN 1 (g)`, y = G)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "G vs Peso RN 1 (g)", x = "Peso RN 1 (g)", y = "G")
+
+# Gráfico 2: G vs Idade
+g2 <- ggplot(dados, aes(x = Idade, y = G)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "G vs Idade", x = "Idade", y = "G")
+
+# Gráfico 3: DOR (EVA) vs SENTAR
+g3 <- ggplot(dados, aes(x = SENTAR, y = `DOR (EVA)`)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "DOR (EVA) vs SENTAR", x = "SENTAR", y = "DOR (EVA)")
+
+# Gráfico 4: DOR (EVA) vs CAMINHAR
+g4 <- ggplot(dados, aes(x = CAMINHAR, y = `DOR (EVA)`)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "DOR (EVA) vs CAMINHAR", x = "CAMINHAR", y = "DOR (EVA)")
+
+# Gráfico 5: CAMINHAR vs SENTAR
+g5 <- ggplot(dados, aes(x = SENTAR, y = CAMINHAR)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "CAMINHAR vs SENTAR", x = "SENTAR", y = "CAMINHAR")
+
+# Gráfico 6: CAMINHAR vs LEVANTAR
+g6 <- ggplot(dados, aes(x = LEVANTAR, y = CAMINHAR)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+  labs(title = "CAMINHAR vs LEVANTAR", x = "LEVANTAR", y = "CAMINHAR")
+
+
+# Combina os gráficos em um layout 2x3
+g1 + g2 + g3 + g4 + g5 + g6 + plot_layout(ncol = 2)
